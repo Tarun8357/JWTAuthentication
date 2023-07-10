@@ -35,7 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
-    @Bean
+//    @Bean
     public ViewResolver viewResolver(ISpringTemplateEngine templateEngine) {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine);

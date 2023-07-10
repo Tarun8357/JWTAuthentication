@@ -17,13 +17,15 @@ import java.util.Date;
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-  @Value("${unoveo.app.jwtSecret}")
+  @Value("{unoveo.app.jwtSecret}")
   private String jwtSecret;
 
-  @Value("${unoveo.app.jwtExpirationMs}")
+  @Value("{unoveo.app.jwtExpirationMs}")
   private String jwtExpirationMs;
 
   public String generateJwtToken(Authentication authentication) {
+    System.out.println("----------generating the jwt token----------");
+    System.out.println("-----tokenrequest---"+authentication+"-----------");
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -36,10 +38,12 @@ public class JwtUtils {
   }
   
   private Key key() {
+    System.out.println("In the key");
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
   }
 
   public String getUserNameFromJwtToken(String token) {
+    System.out.println("get username from jwt token");
     return Jwts.parser().setSigningKey(key())
                .parseClaimsJws(token).getBody().getSubject();
   }
