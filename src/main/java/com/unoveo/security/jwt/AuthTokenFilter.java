@@ -1,5 +1,6 @@
 package com.unoveo.security.jwt;
 
+
 import com.unoveo.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,21 +19,26 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
-  @Autowired
-  private JwtUtils jwtUtils;
 
-  @Autowired
-  private UserDetailsServiceImpl userDetailsService;
+@Autowired
+public JwtUtils jwtUtils ;
+
+@Autowired
+public UserDetailsServiceImpl userDetailsService ;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+
+  public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService) {
+  }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    System.out.println("---------------do filterInternal----------------------");
     try {
       String jwt = parseJwt(request);
-      System.out.println("-------"+jwt);
+
+      System.out.println("from dofilterinternal method   >>>>>>>>>" +jwt );
+      System.out.println("jwt utils >>>>>>>>>>>>>>>>>>>>>>>>"+ jwtUtils);
       if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
@@ -54,6 +60,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   }
 
   private String parseJwt(HttpServletRequest request) {
+    System.out.println("parse jwt method run from authToken filter>>>>>>");
     String headerAuth = request.getHeader("Authorization");
 
     if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
@@ -61,5 +68,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     return null;
+
+
   }
 }

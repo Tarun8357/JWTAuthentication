@@ -1,8 +1,12 @@
 package com.unoveo.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
+@Data
+@DynamicUpdate
 @Table(name = "roles")
 public class Role {
   @Id

@@ -15,6 +15,15 @@ import java.util.ArrayList;
 
 @WebServlet("/calc")
 public class CalculatorServlet extends HttpServlet {
+
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    resp.setContentType("application/json");
+
+    PrintWriter pw = resp.getWriter();
+    pw.print("get method called");
+    System.out.print("get method called");
+  }
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     resp.setHeader("Access-Control-Allow-Origin",  "*");
@@ -33,8 +42,5 @@ public class CalculatorServlet extends HttpServlet {
     out.print(CalculatorModel.calculation(paramList));
   }
 
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//    doPost(req,resp);
-  }
+
 }

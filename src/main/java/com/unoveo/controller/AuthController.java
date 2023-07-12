@@ -1,4 +1,5 @@
-package com.unoveo.controllers;
+package com.unoveo.controller;
+
 
 import com.unoveo.models.ERole;
 import com.unoveo.models.Role;
@@ -20,7 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -31,32 +31,26 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
-@ComponentScan("repository")
+@ComponentScan("com.unoveo.springjwt.repository")
+
 public class AuthController {
-  @Autowired
-  AuthenticationManager authenticationManager;
-
-  @Autowired
-  UserRepository userRepository;
-
-  @Autowired
-  RoleRepository roleRepository;
-
-  @Autowired
-  PasswordEncoder encoder;
-
-  @Autowired
-  JwtUtils jwtUtils;
+  @Autowired public AuthenticationManager authenticationManager;
+  @Autowired public UserRepository userRepository;
+  @Autowired public RoleRepository roleRepository;
+  @Autowired public PasswordEncoder encoder;
+  @Autowired public JwtUtils jwtUtils;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    System.out.println("In authenticate user");
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
+    System.out.println("jwt auth"+jwt);
+
+    System.out.println(jwtUtils.toString());
     
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
     List<String> roles = userDetails.getAuthorities().stream()
@@ -124,4 +118,7 @@ public class AuthController {
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+
+
+
 }

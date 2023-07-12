@@ -19,7 +19,6 @@ public class JwtResponse {
   }
 
   public String getAccessToken() {
-    System.out.println( "In get access token");
     return token;
   }
 
